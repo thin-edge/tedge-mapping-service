@@ -1,0 +1,60 @@
+# yaml-language-server: $schema=https://nfpm.goreleaser.com/static/schema.json
+---
+name: tedge-mapping-service
+arch: all
+platform: linux
+version: ${SEMVER}
+section: misc
+priority: optional
+maintainer: Community <community@thin-edge.io>
+description: thin-edge.io RHE Linux Package manager plugin to managed dnf packages
+vendor: thin-edge.io
+homepage: https://github.com/thin-edge/tedge-rpm-plugin
+license: Apache License 2.0
+apk:
+  # Use noarch instead of "all"
+  arch: noarch
+
+overrides:
+  deb:
+    depends:
+      - python3
+      - python3-paho-mqtt
+  rpm:
+    depends:
+      - python3
+      - python3-paho-mqtt
+  apk:
+    depends:
+      - python3
+      - py3-paho-mqtt
+
+scripts:
+  postinstall: src/scripts/post-install
+  postremove: src/scripts/post-remove
+
+contents:
+  # executable
+  - src: ./src/tedge-mapping-service
+    dst: /opt/tedge-mapping-service
+    file_info:
+      mode: 0755
+  
+  # systemd service definition
+  - src: ./src/services/systemd/tedge-mapping-service.service
+    dst: /lib/systemd/system/
+    file_info:
+      mode: 0644
+    packager: deb
+
+  - src: ./src/services/systemd/tedge-mapping-service.service
+    dst: /lib/systemd/system/
+    file_info:
+      mode: 0644
+    packager: rpm
+
+  - src: ./src/services/init.d/tedge-mapping-service
+    dst: /etc/init.d/
+    file_info:
+      mode: 755
+    packager: apk

@@ -1,0 +1,13 @@
+[Unit]
+Description=mapping service
+After=mosquitto.service
+Wants=mosquitto.service
+
+[Service]
+User=root
+ExecStart=/opt/tedge-mapping-service/tedge-mapping-service
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
