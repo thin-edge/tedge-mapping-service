@@ -32,8 +32,8 @@ class App:
         while True:
             try:
                 client.connect()
-                # client.bootstrap()
-                # client.subscribe()
+                client.bootstrap()
+                client.subscribe()
                 while True:
                     time.sleep(1)
                 # client.loop_forever()

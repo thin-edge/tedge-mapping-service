@@ -1,4 +1,5 @@
-"""Module entrypoint"""
+#!/usr/bin/env python3
+"""Module entrypoints"""
 
 from app import App
 

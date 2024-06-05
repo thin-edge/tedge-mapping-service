@@ -32,6 +32,7 @@ overrides:
 scripts:
   postinstall: src/scripts/post-install
   postremove: src/scripts/post-remove
+  preremove: src/scripts/pre-remove
 
 contents:
   # executable

@@ -81,7 +81,7 @@ class MappingClient:
             def _create_on_connect_callback(done):
                 _done = done
 
-                def on_connect(_client, _userdata, _flags, result_code, properties):
+                def on_connect(_client, _userdata, _flags, result_code):
                     nonlocal _done
                     if result_code == 0:
                         log.info("Connected to MQTT Broker!")
@@ -91,9 +91,7 @@ class MappingClient:
 
                 return on_connect
 
-            def on_disconnect(
-                _client: Client, _userdata: Any, result_code: int, properties
-            ):
+            def on_disconnect(_client: Client, _userdata: Any, result_code: int):
                 log.info("Client was disconnected. result_code=%d", result_code)
 
             self._connected_once.clear()
@@ -137,7 +135,7 @@ class MappingClient:
         handlers = [
             (
                 self.config.configuration.custom_topic,
-                self.on__custom_message,
+                self.on_custom_message,
             ),
         ]
         for topic, handler in handlers:
@@ -170,14 +168,18 @@ class MappingClient:
         worker.start()
 
         def add_job(client, _userdata, message: MQTTMessage):
-            if len(message.payload) == 0:
-                # Message is being cleared
-                return
-
-            payload = json.loads(message.payload.decode())
-
-            log.info("Adding job")
-            worker.put(self.config, client, JSONMessage(message.topic, payload))
+            # if len(message.payload) == 0:
+            #     # Message is being cleared
+            # 	return
+            try:
+                payload = json.loads(message.payload.decode())
+                log.info("Adding job")
+                worker.put(self.config, client, JSONMessage(message.topic, payload))
+            except Exception as e:
+                log.error(
+                    "Can't parse message, ignoring: payload=%s",
+                    message.payload,
+                )
 
         self.mqtt.message_callback_add(topic, add_job)
         self.mqtt.subscribe(topic, qos=2)
