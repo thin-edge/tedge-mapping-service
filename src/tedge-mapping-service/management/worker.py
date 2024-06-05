@@ -6,8 +6,8 @@ import threading
 from typing import Any, List, Callable
 
 from paho.mqtt.client import Client
-from .messages import JSONMessage
-from .config import Config
+from management.messages import JSONMessage
+from management.config import Config
 
 Job = Callable[[Config, Client, JSONMessage], None]
 

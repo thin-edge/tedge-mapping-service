@@ -3,6 +3,7 @@ set -e
 
 SERVICE_NAME=tedge-mapping-service
 CONFIGURATION_DIR="/etc/${SERVICE_NAME:?}"
+INSTALL_DIR="/opt/${SERVICE_NAME:?}"
 
 remove() {
     printf "\033[32m Post Remove of a normal remove\033[0m\n"
@@ -14,11 +15,14 @@ remove() {
         rm -rf "$CONFIGURATION_DIR"
       fi
     fi
+	
+	rm -rf "$INSTALL_DIR"
 }
 
 purge() {
     printf "\033[32m Post Remove purge, deb only\033[0m\n"
     rm -rf "$CONFIGURATION_DIR"
+    rm -rf "$INSTALL_DIR"
 }
 
 upgrade() {
