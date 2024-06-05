@@ -29,7 +29,7 @@ class MappingClient:
         self.config = config
         self._workers: List[Worker] = []
         self.config.device_id = self.get_id()
-        self.on_custom_message = Mapper(config)
+        self.on_custom_message = Mapper(config).on_custom_message
         self._subscriptions = []
         self._connected_once = threading.Event()
 
@@ -140,7 +140,7 @@ class MappingClient:
         ]
         for topic, handler in handlers:
             log.info("Registering worker. topic=%s", topic)
-            self.register_worker(topic, handler)
+            self.register_worker(topic, target = handler)
 
         # Only register that the child device is ready now
         # Register health check and bootstrap other plugin settings

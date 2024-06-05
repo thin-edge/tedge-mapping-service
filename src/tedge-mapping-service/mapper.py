@@ -28,5 +28,5 @@ class Mapper:
                 each worker (individually). Defaults to 10.
         """
 
-    def on_custom_message(config: Config, client: Client, msg: JSONMessage):
+    def on_custom_message(self, config: Config, client: Client, msg: JSONMessage):
         log.info(f"On topic: {msg.topic} new signal: {msg.payload}")
