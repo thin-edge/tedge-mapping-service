@@ -3,7 +3,6 @@
 import logging
 import json
 import time
-import os
 import threading
 from typing import Any, List
 from paho.mqtt.client import Client, MQTTMessage, MQTTv311

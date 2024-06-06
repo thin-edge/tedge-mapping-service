@@ -6,7 +6,7 @@ from typing import Any, List
 from paho.mqtt.client import Client
 from management.config import Config
 from management.topics import health_topic
-from management.worker import Worker, Job
+from management.worker import Job
 from management.messages import JSONMessage
 
 log = logging.getLogger(__file__)
@@ -30,3 +30,6 @@ class Mapper:
 
     def on_custom_message(self, config: Config, client: Client, msg: JSONMessage):
         log.info(f"On topic: {msg.topic} new signal: {msg.payload}")
+        value = msg.payload["value"]
+        te_payload = f'{{ "temperature": {{"value": {value}  }} }}'
+        client.publish("te/device/main///m/c8y_Temperature", te_payload)

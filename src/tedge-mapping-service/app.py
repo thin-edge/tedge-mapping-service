@@ -1,11 +1,7 @@
 """Connector application"""
 import logging
-import queue
-import threading
-import os
 import time
 import sys
-from pathlib import Path
 from client import MappingClient
 from management.config import Config
 
